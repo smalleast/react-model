@@ -1,0 +1,138 @@
+.hairline {
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: auto;
+    right: auto;
+    background-color: #c8c7cc;
+    display: block;
+    z-index: 15;
+  }
+}
+
+.hairline-x {
+  @extend .hairline;
+  &:after {
+    height: 1px;
+    width: 100%;
+    transform-origin: 50% 0;
+    transform: scaleY(.5);
+  }
+}
+
+.hairline-y {
+  @extend .hairline;
+  &:after {
+    width: 1px;
+    height: 100%;
+    transform-origin: 0 50%;
+    transform: scaleX(.5);
+  }
+}
+
+.react-modal {
+  font-family: -apple-system, SF UI Text, Helvetica Neue, Helvetica, Arial, sans-serif;
+  width: 80%;
+  top: 38.2%;
+  left: 50%;
+  position: absolute;
+  z-index: 2;
+  transform: scale(1.185);
+  transition: transform 0.2s ease-in-out, opacity 0.22s linear;
+  user-select: none;
+  &-content {
+    border-radius: 13px;
+    overflow: hidden;
+  }
+  &[hidden] {
+    display: none;
+  }
+  &[data-visible=false] {
+    opacity: 0;
+    transform: scale(1.085);
+  }
+
+  &[data-visible=true][data-animating=true] {
+    opacity: 1;
+    transform: scale(1);
+  }
+  &[data-visible=true][data-animating=false] {
+    transform: scale(1);
+  }
+
+  &[data-theme=tranparent] {
+  }
+  &[data-theme=ios] {
+    > * {
+      background: rgba(#FFF, .95);
+    }
+    .react-modal-ft {
+      // border-top: 1px solid #dedede;
+      @extend .hairline-x;
+      &:after {
+        top: 0;
+      }
+      height: 44px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .react-modal-button {
+      &:active {
+        background: #dedede;
+      }
+      + .react-modal-button {
+        position: relative;
+        @extend .hairline-y;
+        &:after {
+          left: 0;
+        }
+      }
+    }
+  }
+  &-hd {
+    padding: 15px 15px 0;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+  }
+  &-bd {
+    text-align: center;
+    padding: 15px;
+  }
+  &-ft {
+    height: 44px;
+    display: flex;
+    justify-content: center;
+  }
+  &-button {
+    &:first-child {
+      //border-bottom-left-radius: 13px;
+    }
+
+    &:last-child {
+      //border-bottom-right-radius: 13px;
+    }
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    width: 100%;
+    padding: 0 5px;
+    height: 44px;
+    font-size: 17px;
+    line-height: 44px;
+    text-align: center;
+    color: #007aff;
+    display: block;
+    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+  }
+}
