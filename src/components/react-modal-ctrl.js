@@ -9,6 +9,7 @@ export default class ReactModalCtrl {
   }
 
   static show(inOptions){
+    console.log(instance);
     instance.component.show(inOptions);
   }
 

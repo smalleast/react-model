@@ -1,35 +1,31 @@
-.hairline {
+.hr {
   position: relative;
   &:after {
     content: '';
+    display: block;
     position: absolute;
-    left: 0;
     top: 0;
+    left: 0;
     bottom: auto;
     right: auto;
-    background-color: #c8c7cc;
-    display: block;
-    z-index: 15;
+    background-color: #e4e4e4;
+    z-index: 2;
   }
-}
-
-.hairline-x {
-  @extend .hairline;
-  &:after {
-    height: 1px;
-    width: 100%;
-    transform-origin: 50% 0;
-    transform: scaleY(.5);
+  &-x {
+    @extend .hr;
+    &:after {
+      width: 100%;
+      height: 1px;
+      transform: scaleY(.5);
+    }
   }
-}
-
-.hairline-y {
-  @extend .hairline;
-  &:after {
-    width: 1px;
-    height: 100%;
-    transform-origin: 0 50%;
-    transform: scaleX(.5);
+  &-y {
+    @extend .hr;
+    &:after {
+      width: 1px;
+      height: 100%;
+      transform: scaleX(.5);
+    }
   }
 }
 
@@ -43,96 +39,69 @@
   transform: scale(1.185);
   transition: transform 0.2s ease-in-out, opacity 0.22s linear;
   user-select: none;
-  &-content {
-    border-radius: 13px;
-    overflow: hidden;
-  }
   &[hidden] {
     display: none;
+  }
+  &-content {
+    border-radius: 5px;
+    overflow: hidden;
   }
   &[data-visible=false] {
     opacity: 0;
     transform: scale(1.085);
   }
-
-  &[data-visible=true][data-animating=true] {
+  &[data-visible=true][data-animating=false] {
     opacity: 1;
     transform: scale(1);
   }
-  &[data-visible=true][data-animating=false] {
+  &[data-visible=true][data-animating=true] {
     transform: scale(1);
   }
-
   &[data-theme=tranparent] {
   }
   &[data-theme=ios] {
     > * {
-      background: rgba(#FFF, .95);
+      background-color: rgb(255, 255, 255);
     }
     .react-modal-ft {
-      // border-top: 1px solid #dedede;
-      @extend .hairline-x;
-      &:after {
-        top: 0;
-      }
-      height: 44px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .react-modal-button {
-      &:active {
-        background: #dedede;
-      }
-      + .react-modal-button {
-        position: relative;
-        @extend .hairline-y;
-        &:after {
-          left: 0;
+      @extend .hr-x;
+      .react-modal-button {
+        &:active {
+          background-color: #ddd;
+        }
+        + .react-modal-button {
+          @extend .hr-y;
         }
       }
     }
   }
   &-hd {
-    padding: 15px 15px 0;
-    font-size: 18px;
     text-align: center;
-    font-weight: bold;
+    padding: 15px 15px 0 15px;
+    font-size: 16px;
   }
   &-bd {
     text-align: center;
     padding: 15px;
+    font-size: 14px;
   }
   &-ft {
     height: 44px;
     display: flex;
     justify-content: center;
+    font-size: 14px;
+
   }
   &-button {
-    &:first-child {
-      //border-bottom-left-radius: 13px;
-    }
-
-    &:last-child {
-      //border-bottom-right-radius: 13px;
-    }
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
     width: 100%;
-    padding: 0 5px;
     height: 44px;
-    font-size: 17px;
     line-height: 44px;
     text-align: center;
     color: #007aff;
-    display: block;
-    position: relative;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    padding: 0 5px;
+    white-space: normal;
     overflow: hidden;
-    cursor: pointer;
+    text-overflow: ellipsis;
     box-sizing: border-box;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
   }
 }
