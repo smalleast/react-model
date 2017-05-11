@@ -94,7 +94,8 @@ export default class ReactModal extends React.Component {
   }
 
   render() {
-    const {backdropStyle, visible, onClick, hidden, animating, theme} = this.state;
+    const { visible, onClick, hidden, animating, theme} = this.state;
+    const {backdropStyle}=this.props;
     return (
       <div className="react-modal-container">
         <ReactBackdrop style={backdropStyle} visible={visible} onClick={onClick.bind(this)}/>
