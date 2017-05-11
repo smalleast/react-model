@@ -8,17 +8,17 @@ export default class ReactModalCtrl {
     return instance;
   }
 
-  static show(inOptions){
+  static show(inOptions, inCallback) {
     console.log(instance);
-    instance.component.show(inOptions);
+    instance.component.show(inOptions, inCallback);
   }
 
-  static hide(){
-    instance.component.hide();
+  static hide(inCallback) {
+    instance.component.hide(inCallback);
   }
 
-  static destory(){
+  static destory() {
     instance.destory();
-    instance=null;
+    instance = null;
   }
 }

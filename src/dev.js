@@ -97,6 +97,9 @@ class App extends React.Component {
       header: null,
       body: 'NO header content',
       theme: 'ios',
+      onClick: function () {
+        ReactModalCtrl.hide();
+      },
       buttons: [{
         text: 'options',
         onClick: function (item) {
@@ -110,9 +113,13 @@ class App extends React.Component {
       }, {
         text: 'close',
         onClick: function (item) {
-          ReactModalCtrl.hide();
+          ReactModalCtrl.hide(() => {
+            console.log('close...');
+          });
         }
       }]
+    }, () => {
+      console.log('show....');
     });
   }
 

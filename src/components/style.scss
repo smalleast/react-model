@@ -46,17 +46,20 @@
     border-radius: 5px;
     overflow: hidden;
   }
-  &[data-visible=false] {
-    opacity: 0;
+  &[data-visible=false]{
+    opacity: 0.01;
     transform: scale(1.085);
   }
-  &[data-visible=true][data-animating=false] {
+
+  &[data-visible=true][data-animating=true]{
     opacity: 1;
     transform: scale(1);
   }
-  &[data-visible=true][data-animating=true] {
+  &[data-visible=true][data-animating=false]{
     transform: scale(1);
   }
+
+
   &[data-theme=tranparent] {
   }
   &[data-theme=ios] {

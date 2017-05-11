@@ -1,5 +1,5 @@
 /**
- * Created by tony on 2017/5/4.
+ * Created by tony on 2017/5/11.
  */
 import './style.scss';
 import documentAppend from 'react-document-append';
@@ -7,6 +7,9 @@ import calcStyle from 'calc-style';
 import classNames from 'classnames';
 import {ReactBackdrop} from 'react-backdrop';
 import React, {PropTypes} from 'react';
+import noop from 'noop';
+import objectAssign from 'object-assign';
+
 export default class ReactModal extends React.Component {
   static propTypes = {
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
@@ -14,7 +17,8 @@ export default class ReactModal extends React.Component {
     buttons: PropTypes.array,
     theme: PropTypes.oneOf(['ios', 'tranparent']),
     className: PropTypes.string,
-    backdropStyle: PropTypes.object
+    backdropStyle: PropTypes.object,
+    onClick: PropTypes.func
   }
 
   static newInstance(inProps) {
@@ -27,6 +31,7 @@ export default class ReactModal extends React.Component {
     header: null,
     body: null,
     buttons: [],
+    onClick: noop,
     backdropStyle: {
       style: {
         opacity: 0.7
@@ -43,82 +48,68 @@ export default class ReactModal extends React.Component {
     this.state = {
       header: props.header,
       body: props.body,
-      visible: props.visible,
       style: {},
       buttons: props.buttons,
       theme: props.theme,
+      onClick: props.onClick,
+      hidden: true,
+      visible: false,
       animating: false
-    }
-    this._timer = null;
+    };
+    this._callback = null;
   }
 
-  show(inOptions) {
-    console.log('show');
-    this._setVisible(inOptions, true);
-  }
-
-  hide() {
-    console.log('hide');
-    this._setVisible({}, false);
-  }
-
-  _setVisible(inOptions, inValue) {
-    let self = this;
-    self.setState({
-      animating: true
-    })
-    this._timer=setTimeout(this._calcStyleOnShow.bind(this, inOptions, inValue), 300)
-  }
-
-  _calcStyleOnShow(inOptions, inValue) {
-    let self = this;
-
-    self.setState(
-      Object.assign({}, self.props, {
-        visible: inValue
-      }, inOptions), function () {
-        calcStyle(self.refs.root, function (inStyle) {
-          self.setState({
-            style: inStyle
-          })
-          self._clearTimeout();
-        })
+  show(inOptions, inCallback) {
+    this._callback = inCallback;
+    const {visible} = this.state;
+    const {root} = this.refs;
+    !visible && this.setState({animating: true, hidden: false}, () => {
+      setTimeout(() => {
+        this.setState({visible: true})
       })
-  }
-  _clearTimeout() {
-    clearTimeout(this._timer);
-    this._timer = null;
+    });
+
+    let options = objectAssign({}, this.props, inOptions);
+    this.setState(options, () => {
+      calcStyle(root, (style) => {
+        this.setState({style});
+      })
+    })
   }
 
-  _click() {
-    this.hide();
+  hide(inCallback) {
+    console.log('hide');
+    this._callback = inCallback;
+    this.setState({visible: false})
   }
 
-  _onTransitionEnd() {
-    let self = this;
-    self.setState({
-      animating: false
+  _onTransitionEnd = (inEvent) => {
+    const {visible} = this.state;
+    this.setState({animating: false}, () => {
+      !visible && this.setState({hidden: true});
+      if (this._callback && typeof this._callback === 'function') {
+        this._callback();
+      }
     })
   }
 
   render() {
-    const {backdropStyle, visible} = this.state;
+    const {backdropStyle, visible, onClick, hidden, animating, theme} = this.state;
     return (
       <div className="react-modal-container">
-        <ReactBackdrop style={backdropStyle} visible={visible}/>
+        <ReactBackdrop style={backdropStyle} visible={visible} onClick={onClick.bind(this)}/>
         <div
           ref="root"
-          data-visible={this.state.visible}
-          data-animating={this.state.animating}
-          data-theme={this.state.theme}
+          data-visible={visible}
+          data-animating={animating}
+          data-theme={theme}
           className={classNames('react-modal', this.props.className)}
-          hidden={!this.state.visible && !this.state.animating}
+          hidden={hidden}
           style={{
             marginTop: `-${this.state.style.height / 2}px`,
             marginLeft: `-${this.state.style.width / 2}px`
           }}
-          onTransitionEnd={this._onTransitionEnd.bind(this)}
-          onClick={this._click.bind(this)}>
+          onTransitionEnd={this._onTransitionEnd}>
           <div className="react-modal-content">
             {
               this.state.header && typeof(this.state.header) === 'string' &&
