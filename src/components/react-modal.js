@@ -6,9 +6,8 @@ import documentAppend from 'react-document-append';
 import calcStyle from 'calc-style';
 import classNames from 'classnames';
 import {ReactBackdrop} from 'react-backdrop';
-import React, {PropTypes} from 'react';
 import noop from 'noop';
-import objectAssign from 'object-assign';
+
 
 export default class ReactModal extends React.Component {
   static propTypes = {
@@ -19,7 +18,7 @@ export default class ReactModal extends React.Component {
     className: PropTypes.string,
     backdropStyle: PropTypes.object,
     onClick: PropTypes.func
-  }
+  };
 
   static newInstance(inProps) {
     return documentAppend(ReactModal, inProps, {
@@ -37,7 +36,7 @@ export default class ReactModal extends React.Component {
         opacity: 0.7
       }
     }
-  }
+  };
 
   componentWillMount() {
 
@@ -91,7 +90,7 @@ export default class ReactModal extends React.Component {
         this._callback();
       }
     })
-  }
+  };
 
   render() {
     const { visible, onClick, hidden, animating, theme} = this.state;
